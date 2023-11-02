@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css" />
+    <style>
+        .login-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-popup h2 {
+            font-size: 24px;
+        }
+
+        .login-popup input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-popup button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-popup .error-message {
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+    <section>
+        <div>
+            <img class="image1" src="./images/img1.jpg"/>
+        </div>
+        <nav class="navbar-wrapper">
+            <ul class="navbar">
+                <li><a href="#Home">Home</a></li>
+                <li><a href="#Order">Order</a></li>
+                <li><a href="#Food">Food</a></li>
+                <li><a href="#Restaurents">Restaurents</a></li>
+                <li><a href="#Testimonials">Testimonials</a></li>
+                <li><a href="#contactUs">Contact us</a></li>
+            </ul>
+            <div class="icons">
+                <img src="https://pic.onlinewebfonts.com/thumbnails/icons_217620.svg" width="25px" height="25px">
+                <img src="https://pic.onlinewebfonts.com/thumbnails/icons_564248.svg" width="25px" height="25px">
+            </div>
+        </nav>
+        <div class="loremipsum">
+            <h1>LOREM IPSUM</h1>
+            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+        </div>
+        <div class="box">
+        </div>
+    </section>
+    <section id="Order" class="menu-wrapper">
+        <h1 class="heading">Order Now</h1>
+        <div class="menu">
+            <div class="burger">
+                <img class="bimage"  src="./images/img4.jpg"/>
+                <h1>BURGER</h1>
+                <p>Lorem Ipsum has been the industry's standard dummy text</p>
+            </div>
+            <div class="pizza">
+                <img class="pimage"  src="./images/img2.jpg"/>
+                <h1>PIZZA</h1>
+                <p>Lorem Ipsum has been the industry's standard dummy text</p>
+            </div>
+            <div class="pasta">
+                <img class="paimage"  src="./images/img3.jpg"/>
+                <h1>PASTA</h1>
+                <p>Lorem Ipsum has been the industry's standard dummy text</p>
+            </div>
+        </div>
+        <button class="button">Order</button>
+        <marquee style="color:lightgreen;">Click on Order Button to login </marquee>
+    </section>
+    
+    <div id="loginPopup" class="login-popup">
+        <h2>Login</h2>
+        <form id="loginForm" action="#">
+            <input type="text" id="name" name="name" placeholder="Name" required>
+            <div class="error-message" id="nameError"></div>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <div class="error-message" id="emailError"></div>
+            <input type="tel" id="phone" name="phone" placeholder="Phone" required>
+            <div class="error-message" id="phoneError"></div>
+            <button type="submit">Submit</button>
+        </form>
+        <button id="closeLogin" class="close-cart-button">Close</button>
+    </div>
+
+    <div id="cart" class="cart-container">
+        <h2>Cart</h2>
+        <div class="cart-items">
+        </div>
+        <button id="close-cart" class="close-cart-button">Close</button>
+    </div>
+
+    <script>
+        const orderButton = document.querySelector(".button");
+        const cart = document.getElementById("cart");
+        const cartItems = document.querySelector(".cart-items");
+        const closeCartButton = document.getElementById("close-cart");
+        const loginPopup = document.getElementById("loginPopup");
+        const loginForm = document.getElementById("loginForm");
+        const closeLoginButton = document.getElementById("closeLogin");
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const phoneInput = document.getElementById("phone");
+        const nameError = document.getElementById("nameError");
+        const emailError = document.getElementById("emailError");
+        const phoneError = document.getElementById("phoneError");
+
+        orderButton.addEventListener("click", () => {
+            loginPopup.style.display = "block";
+        });
+
+        closeLoginButton.addEventListener("click", () => {
+            loginPopup.style.display = "none";
+        });
+
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const name = nameInput.value;
+            const email = emailInput.value;
+            const phone = phoneInput.value;
+            let isValid = true;
+
+            nameError.textContent = "";
+            emailError.textContent = "";
+            phoneError.textContent = "";
+
+            if (!name) {
+                nameError.textContent = "Name is required.";
+                isValid = false;
+            }
+
+            if (!email) {
+                emailError.textContent = "Email is required.";
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                emailError.textContent = "Invalid email format.";
+                isValid = false;
+            }
+
+            if (!phone) {
+                phoneError.textContent = "Phone is required.";
+                isValid = false;
+            } else if (!validatePhone(phone)) {
+                phoneError.textContent = "Invalid phone format. Use digits and optional dashes or spaces.";
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert("Form submitted successfully!");
+                loginPopup.style.display = "none";
+            }
+        });
+        function validateEmail(email) {
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            return emailPattern.test(email);
+        }
+        function validatePhone(phone) {
+            const phonePattern = /^[0-9 -]*$/;
+            return phonePattern.test(phone);
+        }
+    </script>
+</body>
+</html>
